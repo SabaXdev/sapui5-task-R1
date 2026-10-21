@@ -1,7 +1,8 @@
 // webapp/controller/InvoiceList.controller.ts
 import Controller from "sap/ui/core/mvc/Controller";
 import JSONModel from "sap/ui/model/json/JSONModel";
-import { SearchField$SearchEvent } from "sap/m/SearchField";
+import SearchField from "sap/m/SearchField";
+import ComboBox from "sap/m/ComboBox";
 import Filter from "sap/ui/model/Filter";
 import FilterOperator from "sap/ui/model/FilterOperator";
 import ListBinding from "sap/ui/model/ListBinding";
@@ -23,15 +24,18 @@ export default class InvoiceList extends Controller {
 		this.getView()?.setModel(viewModel, "view");
 	}
 
-	onFilterInvoices(event: SearchField$SearchEvent): void {
-		// build filter array
+	onFilterInvoices(): void {
 		const filter = [];
-		const query = event.getParameter("query");
+		const query = (this.byId("searchField") as SearchField).getValue();
+		const status = (this.byId("statusFilter") as ComboBox).getSelectedKey();
+
 		if (query) {
 			filter.push(new Filter("ProductName", FilterOperator.Contains, query));
 		}
+		if (status && status !== "None") {
+			filter.push(new Filter("Status", FilterOperator.EQ, status));
+		}
 
-		// filter binding
 		const list = this.byId("invoiceList") as List;
 		const binding = list?.getBinding("items") as ListBinding;
 		binding?.filter(filter);

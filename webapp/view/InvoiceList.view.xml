@@ -9,8 +9,18 @@
         <Title text="{i18n>invoiceListTitle}"/>
         <ToolbarSpacer/>
         <SearchField
+          id="searchField"
           width="50%"
           search=".onFilterInvoices"/>
+        <ComboBox
+          id="statusFilter"
+          change=".onFilterInvoices"
+          selectedKey="None">
+          <core:Item key="None" text="All"/>
+          <core:Item key="B" text="{i18n>invoiceStatusB}"/>
+          <core:Item key="A" text="{i18n>invoiceStatusA}"/>
+          <core:Item key="C" text="{i18n>invoiceStatusC}"/>
+        </ComboBox>
       </Toolbar>
     </headerToolbar>
     <Table
